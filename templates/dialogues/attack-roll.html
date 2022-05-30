@@ -5,7 +5,7 @@
         {{/ifNotEquals}}
         {{#ifEquals data.rollType 'damage'}}
         {{> systems/exaltedthird/templates/dialogues/damage-roll.html}}
-        {{/ifNotEquals}}
+        {{/ifEquals}}
         <div class="d-flex">
             <button type="button" id="roll-button">Roll</button>
             <button type="button" id="cancel">Cancel</button>

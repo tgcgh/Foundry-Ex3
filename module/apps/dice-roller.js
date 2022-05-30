@@ -429,12 +429,8 @@ export class RollForm extends FormApplication {
             if (this.object.excellency > 0) {
                 this.object.diceModifier += this.object.excellency;
                 let cost = this.object.excellency;
-                if (actorData.data.motes.peripheral.value < 1) {
-                    actorData.data.motes.personal.value - cost;
-                }
-                else{
-                    actorData.data.motes.peripheral.value - cost;
-                }
+                console.log("motes =" + actorData.data.motes.peripheral.value + " - " + this.object.excellency);
+                actorData.data.motes.peripheral.value - cost;
             }
             //end CGH substract excellency cost
             
@@ -640,7 +636,7 @@ export class RollForm extends FormApplication {
         else {
             this.object.thereshholdSuccesses = 0;
         }
-        if ((this.object.thereshholdSuccesses >= 0 && this.object.rollType !== 'accuracy') || this.object.rollType === 'damage') {
+        if (this.object.rollType === 'damage') {//(this.object.thereshholdSuccesses >= 0 && this.object.rollType !== 'accuracy') || 
             this._damageRoll();
         }
         else {

@@ -25,6 +25,8 @@ export class RollForm extends FormApplication {
             this.object.isMagic = data.isMagic || false;
             this.object.diceModifier = 0;
             this.object.accuracy = data.accuracy || 0;
+            //CGH excellency cost
+            this.object.excellency = data.excellency || 0;
 
             this.object.overwhelming = data.overwhelming || 0;
             this.object.soak = 0;
@@ -422,6 +424,20 @@ export class RollForm extends FormApplication {
             if (this.object.isFlurry) {
                 dice -= 3;
             }
+            
+            //CGH substract excellency cost
+            if (this.object.excellency > 0) {
+                this.object.diceModifier += this.object.excellency;
+                let cost = this.object.excellency;
+                if (actorData.data.motes.peripheral.value < 1) {
+                    actorData.data.motes.personal.value - cost;
+                }
+                else{
+                    actorData.data.motes.peripheral.value - cost;
+                }
+            }
+            //end CGH substract excellency cost
+            
             if (this.object.diceModifier) {
                 dice += this.object.diceModifier;
             }
@@ -651,7 +667,7 @@ export class RollForm extends FormApplication {
                                                 <ol class="dice-rolls">${this.object.getDice}</ol>
                                             </div>
                                         </div>
-                                        <h4 class="dice-formula">${this.object.total} Succeses vs ${this.object.defense} Defense</h4>
+                                        <h4 class="dice-formula">${this.object.total} Succeses</h4>
                                         <h4 class="dice-formula">${this.object.thereshholdSuccesses} Threshhold Succeses</h4>
                                         <h4 class="dice-total">Attack Missed!</h4>
                                     </div>
@@ -660,7 +676,7 @@ export class RollForm extends FormApplication {
                         </div>
                     </div>
                 </div>
-              `;
+              `;// line 670 vs ${this.object.defense} Defense
                 ChatMessage.create({
                     user: game.user.id,
                     speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -693,7 +709,7 @@ export class RollForm extends FormApplication {
                                             <ol class="dice-rolls">${this.object.getDice}</ol>
                                         </div>
                                     </div>
-                                    <h4 class="dice-formula">${this.object.total} Succeses vs ${this.object.defense} Defense</h4>
+                                    <h4 class="dice-formula">${this.object.total} Succeses</h4>
                                     <h4 class="dice-formula">${this.object.thereshholdSuccesses} Threshhold Succeses</h4>
                                     ${this.object.thereshholdSuccesses < 0 ? '<h4 class="dice-total">Attack Missed!</h4>' : ''}
                                 </div>
@@ -702,7 +718,7 @@ export class RollForm extends FormApplication {
                     </div>
                 </div>
             </div>
-          `;
+          `;//line 712  vs ${this.object.defense} Defense
             ChatMessage.create({
                 user: game.user.id,
                 speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -725,7 +741,7 @@ export class RollForm extends FormApplication {
 
     _accuracyRoll() {
         this._baseAbilityDieRoll();
-        this.object.thereshholdSuccesses = this.object.total - this.object.defense;
+        this.object.thereshholdSuccesses = this.object.total;// - this.object.defense
         let damageResults = ``;
     }
 

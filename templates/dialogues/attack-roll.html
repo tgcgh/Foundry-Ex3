@@ -3,7 +3,7 @@
         {{#ifNotEquals data.rollType 'damage'}}
         {{> systems/exaltedthird/templates/dialogues/accuracy-roll.html}}
         {{/ifNotEquals}}
-        {{#ifNotEquals data.rollType 'accuracy'}}
+        {{#ifEquals data.rollType 'damage'}}
         {{> systems/exaltedthird/templates/dialogues/damage-roll.html}}
         {{/ifNotEquals}}
         <div class="d-flex">

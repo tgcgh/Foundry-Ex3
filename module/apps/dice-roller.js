@@ -532,7 +532,7 @@ export class RollForm extends FormApplication {
                                     </div>
                                 </div>
                                 <h4 class="dice-formula">${this.object.total} Succeses</h4>
-                                <h4 class="dice-formula">${this.object.thereshholdSuccesses} Attack Succeses!</h4>
+                                <h4 class="dice-total">${this.object.thereshholdSuccesses} Attack Succeses!</h4>
                             </div>
                         </div>
                     </div>

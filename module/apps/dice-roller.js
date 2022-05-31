@@ -429,8 +429,13 @@ export class RollForm extends FormApplication {
             if (this.object.excellency > 0) {
                 this.object.diceModifier += this.object.excellency;
                 let cost = this.object.excellency;
-                console.log("motes =" + actorData.data.motes.peripheral.value + " - " + this.object.excellency);
-                actorData.data.motes.peripheral.value - cost;
+                if (actorData.data.motes.peripheral.value < cost) {
+                    actorData.data.motes.personal.value = actorData.data.motes.personal.value - cost;
+                }
+                else{
+                    actorData.data.motes.peripheral.value = actorData.data.motes.peripheral.value - cost;
+                }
+
             }
             //end CGH substract excellency cost
             
@@ -501,6 +506,64 @@ export class RollForm extends FormApplication {
         this.object.roll = roll;
         this.object.getDice = getDice;
         this.object.total = total;
+
+        var title = "Decisive Attack";
+        if (this.object.rollType === 'withering') {
+            title = "Withering Attack";
+        }
+        if (this.object.rollType === 'gambit') {
+            title = "Gambit";
+        }
+        var messageContent = '';
+
+        messageContent = `
+        <div class="chat-card">
+            <div class="card-content">${title}</div>
+            <div class="card-buttons">
+                <div class="flexrow 1">
+                    <div>
+                        <div class="dice-roll">
+                            <div class="dice-result">
+                                <h4 class="dice-formula">${this.object.dice} Dice + ${this.object.successModifier} successes</h4>
+                                <div class="dice-tooltip">
+                                    <div class="dice">
+                                        <ol class="dice-rolls">${this.object.getDice}</ol>
+                                    </div>
+                                </div>
+                                <h4 class="dice-formula">${this.object.total} Succeses</h4>
+                                <h4 class="dice-formula">${this.object.thereshholdSuccesses} Threshhold Succeses</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        
+
+        ChatMessage.create({
+            user: game.user.id,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            content: messageContent,
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            roll: this.object.roll || roll,
+            flags: {
+                "exaltedthird": {
+                    dice: this.object.dice,
+                    successModifier: this.object.successModifier,
+                    total: this.object.total,
+                    defense: this.object.defense,
+                    threshholdSuccesses: this.object.thereshholdSuccesses,
+                    damage: {
+                        dice: baseDamage,
+                        successModifier: this.object.damage.damageSuccessModifier,
+                        soak: this.object.soak,
+                        totalDamage: total,
+                        crashed: this.object.crashed
+                    }
+                }
+            }
+        });
     }
 
     _diceRoll() {

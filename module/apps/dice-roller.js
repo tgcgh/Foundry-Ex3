@@ -554,13 +554,6 @@ export class RollForm extends FormApplication {
                     total: this.object.total,
                     defense: this.object.defense,
                     threshholdSuccesses: this.object.thereshholdSuccesses,
-                    damage: {
-                        dice: baseDamage,
-                        successModifier: this.object.damage.damageSuccessModifier,
-                        soak: this.object.soak,
-                        totalDamage: total,
-                        crashed: this.object.crashed
-                    }
                 }
             }
         });
